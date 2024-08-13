@@ -1,21 +1,6 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-  FlatList,
-  ScrollView,
-  ImageBackground,
-  Image,
-  Platform,
-  ActivityIndicator,
-  TextInput,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native';
+import React from 'react';
+import {View, Text} from 'react-native';
 import colors from '../Utils/colors';
-import Feather from 'react-native-vector-icons/Feather';
 
 export default function Productcom(props) {
   const item = props.item;
