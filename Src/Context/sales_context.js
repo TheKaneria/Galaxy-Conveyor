@@ -7,14 +7,17 @@ import {
   QUORDER_SUCCESS,
   QUORDER_ERROR,
   QUORDER_BEGIN,
+  OVERDUE_BEGIN,
+  OVERDUE_SUCCESS,
+  OVERDUE_ERROR,
 } from '../Utils/action';
 import {
   login_check_url,
   ACCEPT_HEADER,
   getsales_url,
   quotation_order_count_url,
+  overdue_report_url,
 } from '../Utils/BaseUrl';
-import Toast from 'react-native-simple-toast';
 import axios from 'axios';
 import Sales_reducers from '../Reducer/sales_reducer';
 import {useLoginContext} from './login_context';
@@ -25,6 +28,8 @@ const initialState = {
   sales_info: '',
   Quodrder_loading: false,
   Quodrder_info: '',
+  Overdue_loading: false,
+  Overdue_info: '',
 };
 
 export const Salesprovider = ({children}) => {
@@ -79,12 +84,38 @@ export const Salesprovider = ({children}) => {
       });
   };
 
+  const GetOverdue = async props => {
+    var Token = await AsyncStorage.getItem('token');
+    dispatch({type: OVERDUE_BEGIN});
+    axios
+      .get(overdue_report_url, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: 'Bearer ' + Token,
+        },
+      })
+      .then(res => {
+        console.log('res', JSON.stringify(res.data, null, 2));
+
+        if (res.data.status === 'Token is Expired') {
+          setLogout(props);
+        } else {
+          if (res.data.success === 1)
+            dispatch({type: OVERDUE_SUCCESS, payload: res.data});
+        }
+      })
+      .catch(err => {
+        dispatch({type: OVERDUE_ERROR});
+      });
+  };
+
   return (
     <Salescontext.Provider
       value={{
         ...state,
         GetSales,
         GetQuotationOrder,
+        GetOverdue,
       }}>
       {children}
     </Salescontext.Provider>

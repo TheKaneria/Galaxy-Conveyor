@@ -50,6 +50,8 @@ const Production = props => {
     return unsubscribe;
   }, [props]);
 
+  const [getview, SetView] = useState(false);
+
   const Submit = () => {
     if (duration === '') {
       SimpleToast.show('Select Duration');
@@ -61,6 +63,7 @@ const Production = props => {
       fromdata.append('duration', duration);
       fromdata.append('item_id', getcode);
       GetProduct(props, fromdata);
+      SetView(true);
     }
   };
   const onRefresh = () => {
@@ -69,6 +72,7 @@ const Production = props => {
     setDuration(1);
     setReport(1);
     setCode('');
+    SetView(false);
     GetCodeData(props)
       .then(() => setRefreshing(false))
       .catch(() => setRefreshing(false));
@@ -254,7 +258,7 @@ const Production = props => {
             <Text
               style={{
                 color: colors.white,
-                fontFamily: 'NunitoSans_10pt-Bold',
+                fontWeight: 'bold',
               }}>
               Load
             </Text>
@@ -276,7 +280,7 @@ const Production = props => {
                 style={{
                   alignItems: 'center',
                 }}>
-                <Text>Empty Data...!!!</Text>
+                {getview ? <Text>No Data Found...!!!</Text> : null}
               </View>
             );
           }}
@@ -306,8 +310,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   logoutButton: {
-    width: 35,
-    height: 35,
+    width: 45,
+    height: 45,
     borderRadius: 45,
     backgroundColor: colors.white,
     alignItems: 'center',

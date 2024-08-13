@@ -6,6 +6,9 @@ import {
   QUORDER_SUCCESS,
   QUORDER_BEGIN,
   QUORDER_ERROR,
+  OVERDUE_BEGIN,
+  OVERDUE_SUCCESS,
+  OVERDUE_ERROR,
 } from '../Utils/action';
 
 const Sales_reducers = (state, action) => {
@@ -35,6 +38,19 @@ const Sales_reducers = (state, action) => {
 
     case QUORDER_ERROR:
       return {...state, Quodrder_loading: false};
+
+    case OVERDUE_BEGIN:
+      return {...state, Overdue_loading: true};
+
+    case OVERDUE_SUCCESS:
+      return {
+        ...state,
+        Overdue_loading: false,
+        Overdue_info: action.payload,
+      };
+
+    case OVERDUE_ERROR:
+      return {...state, Overdue_loading: false};
 
     default:
       return {...state};

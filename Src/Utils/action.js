@@ -21,3 +21,7 @@ export const CLEAR_DATA = 'CLEAR_DATA';
 export const CODE_BEGIN = 'CODE_BEGIN';
 export const CODE_SUCCESS = 'CODE_SUCCESS';
 export const CODE_ERROR = 'CODE_ERROR';
+
+export const OVERDUE_BEGIN = 'OVERDUE_BEGIN';
+export const OVERDUE_SUCCESS = 'OVERDUE_SUCCESS';
+export const OVERDUE_ERROR = 'OVERDUE_ERROR';
