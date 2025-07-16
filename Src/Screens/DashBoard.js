@@ -128,15 +128,14 @@ const DashBoard = props => {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={refreshing}
-          //     onRefresh={onRefresh}
-          //     colors={[colors.themecolor1]}
-          //   />
-          // }
-        >
-          <View
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[colors.themecolor1]}
+            />
+          }>
+          {/* <View
             style={{
               width: '95%',
               alignItems: 'center',
@@ -173,7 +172,7 @@ const DashBoard = props => {
                 color={colors.white}
               />
             </Ripple>
-          </View>
+          </View> */}
 
           {/* sales */}
           <View style={{width: '95%', alignSelf: 'center', marginTop: 10}}>

@@ -190,7 +190,7 @@ const LoginScreen = props => {
                   }}
                   name={showpass ? 'eye' : 'eye-off'}
                   style={{marginHorizontal: '5%'}}
-                  color={colors.themecolor1}
+                  color={colors.themecolor}
                   size={25}
                 />
               </View>
