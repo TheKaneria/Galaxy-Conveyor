@@ -25,12 +25,15 @@ export const Loginprovider = ({children}) => {
         },
       })
       .then(async res => {
-        console.log('resss', JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           AsyncStorage.setItem('token', res.data.token);
+          AsyncStorage.setItem(
+            'permission',
+            res.data.user.mobile_app_dashboard,
+          );
           Toast.show('Login successfully');
           await AsyncStorage.setItem('islogin', 'true');
-          props.navigation.replace('DashBoard');
+          props.navigation.replace('MainTab');
           dispatch({type: LOGIN_SUCCESS, payload: res.data.user});
         } else {
           Toast.show(res.data.message);

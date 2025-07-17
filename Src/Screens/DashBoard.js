@@ -68,16 +68,6 @@ const DashBoard = props => {
     return unsubscribe;
   }, [props]);
 
-  const {setLogout} = useLoginContext();
-
-  const SETLOGOUT = props => {
-    AsyncStorage.removeItem('islogin');
-    AsyncStorage.removeItem('token');
-
-    AsyncStorage.clear();
-    setLogout(props);
-  };
-
   return (
     <View style={{flex: 1, backgroundColor: colors.white}}>
       <StatusBar
@@ -102,18 +92,6 @@ const DashBoard = props => {
           }}>
           DASHBOARD
         </Text>
-        <TouchableOpacity
-          style={{
-            width: 35,
-            height: 35,
-            borderRadius: 45,
-            backgroundColor: colors.white,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => SETLOGOUT(props)}>
-          <AntDesign name="logout" size={20} color={colors.themecolor1} />
-        </TouchableOpacity>
       </View>
       {sales_loading && Quodrder_loading ? (
         <ActivityIndicator
@@ -128,14 +106,13 @@ const DashBoard = props => {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={refreshing}
-          //     onRefresh={onRefresh}
-          //     colors={[colors.themecolor1]}
-          //   />
-          // }
-        >
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[colors.themecolor1]}
+            />
+          }>
           <View
             style={{
               width: '95%',
@@ -196,183 +173,181 @@ const DashBoard = props => {
                 borderRadius: 10,
                 marginBottom: '5%',
               }}>
-              {sales_loading ? (
-                <ActivityIndicator color={colors.themecolor1} size="small" />
-              ) : (
-                <>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 90,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 2,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 90,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Today
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: colors.white,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          ({'\u20B9'}){' '}
-                          {sales_info ? sales_info?.today_sales : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      Today
+                    </Text>
                   </View>
+
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: colors.white,
+                      // borderTopRightRadius: 10,
+                      // borderBottomRightRadius: 10,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 90,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Current Month
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: colors.white,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          ({'\u20B9'}){' '}
-                          {sales_info ? sales_info?.monthly_sales : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      ({'\u20B9'}) {sales_info ? sales_info?.today_sales : 0}
+                    </Text>
                   </View>
+                </Ripple>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 90,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 2,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 90,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Current F.Y.
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: colors.white,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          ({'\u20B9'}){' '}
-                          {sales_info ? sales_info?.current_fy_sales : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      Current Month
+                    </Text>
                   </View>
-                </>
-              )}
+
+                  <View
+                    style={{
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: colors.white,
+                      // borderTopRightRadius: 10,
+                      // borderBottomRightRadius: 10,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      ({'\u20B9'}) {sales_info ? sales_info?.monthly_sales : 0}
+                    </Text>
+                  </View>
+                </Ripple>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 90,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 2,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
+                      }}>
+                      Current F.Y.
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: colors.white,
+                      // borderTopRightRadius: 10,
+                      // borderBottomRightRadius: 10,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      ({'\u20B9'}){' '}
+                      {sales_info ? sales_info?.current_fy_sales : 0}
+                    </Text>
+                  </View>
+                </Ripple>
+              </View>
             </View>
           </View>
           {/* sales */}
@@ -397,182 +372,174 @@ const DashBoard = props => {
                 borderRadius: 10,
                 marginBottom: '5%',
               }}>
-              {Quodrder_loading ? (
-                <ActivityIndicator color={colors.themecolor1} size="small" />
-              ) : (
-                <>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 90,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 2,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 90,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Today
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: colors.white,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          {Quodrder_info ? Quodrder_info?.today_quotation : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      Today
+                    </Text>
                   </View>
+
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: colors.white,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 90,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Current Month
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: colors.white,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          {Quodrder_info ? Quodrder_info?.monthly_quotation : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      {Quodrder_info ? Quodrder_info?.today_quotation : 0}
+                    </Text>
                   </View>
+                </Ripple>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 90,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 2,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 90,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Current F.Y.
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: colors.white,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.current_fy_quotation
-                            : 0}{' '}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      Current Month
+                    </Text>
                   </View>
-                </>
-              )}
+
+                  <View
+                    style={{
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: colors.white,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      {Quodrder_info ? Quodrder_info?.monthly_quotation : 0}
+                    </Text>
+                  </View>
+                </Ripple>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 90,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 2,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
+                      }}>
+                      Current F.Y.
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: colors.white,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      {Quodrder_info ? Quodrder_info?.current_fy_quotation : 0}{' '}
+                    </Text>
+                  </View>
+                </Ripple>
+              </View>
             </View>
           </View>
           {/* Quotation */}
@@ -597,338 +564,333 @@ const DashBoard = props => {
                 borderRadius: 10,
                 marginBottom: '5%',
               }}>
-              {Quodrder_loading ? (
-                <ActivityIndicator color={colors.themecolor1} size="small" />
-              ) : (
-                <>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 120,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1.2,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 120,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 1.2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Today
-                        </Text>
-                      </View>
+                      Today
+                    </Text>
+                  </View>
 
-                      <View
-                        style={{
-                          flex: 1,
-                          paddingHorizontal: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          backgroundColor: colors.white,
-                          flexDirection: 'row',
-                          borderBottomWidth: 1,
-                        }}>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-Bold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          Converted
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                            flex: 1,
-                            alignItems: 'flex-start',
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.today_quotation_converted
-                            : 0}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          backgroundColor: colors.white,
-                          flexDirection: 'row',
-                          paddingHorizontal: 10,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-Bold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          Received
-                        </Text>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.today_order_converted_in_invoice
-                            : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingHorizontal: 10,
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: colors.white,
+                      flexDirection: 'row',
+                      borderBottomWidth: 1,
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-Bold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      Converted
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                        flex: 1,
+                        alignItems: 'flex-start',
+                      }}>
+                      {Quodrder_info
+                        ? Quodrder_info?.today_quotation_converted
+                        : 0}
+                    </Text>
                   </View>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: colors.white,
+                      flexDirection: 'row',
+                      paddingHorizontal: 10,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 120,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-Bold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 1.2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Current Month
-                        </Text>
-                      </View>
+                      Received
+                    </Text>
+                    <Text
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      {Quodrder_info
+                        ? Quodrder_info?.today_order_converted_in_invoice
+                        : 0}
+                    </Text>
+                  </View>
+                </Ripple>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 120,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1.2,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
+                      }}>
+                      Current Month
+                    </Text>
+                  </View>
 
-                      <View
-                        style={{
-                          flex: 1,
-                          paddingHorizontal: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          backgroundColor: colors.white,
-                          flexDirection: 'row',
-                          borderBottomWidth: 1,
-                        }}>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-Bold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          Converted
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                            flex: 1,
-                            alignItems: 'flex-start',
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.monthly_quotation_converted
-                            : 0}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          backgroundColor: colors.white,
-                          flexDirection: 'row',
-                          paddingHorizontal: 10,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                        }}>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-Bold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          Received
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                            flex: 1,
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.monthly_order_converted_in_invoice
-                            : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingHorizontal: 10,
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: colors.white,
+                      flexDirection: 'row',
+                      borderBottomWidth: 1,
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-Bold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      Converted
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                        flex: 1,
+                        alignItems: 'flex-start',
+                      }}>
+                      {Quodrder_info
+                        ? Quodrder_info?.monthly_quotation_converted
+                        : 0}
+                    </Text>
                   </View>
                   <View
                     style={{
-                      padding: 10,
-                      backgroundColor: '#fff',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: colors.white,
+                      flexDirection: 'row',
+                      paddingHorizontal: 10,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
                     }}>
-                    <Ripple
-                      rippleColor={colors.white}
-                      rippleOpacity={0.5}
-                      rippleDuration={800}
+                    <Text
                       style={{
-                        backgroundColor: colors.themecolor,
-                        elevation: 5,
-                        width: 'auto',
-                        borderRadius: 10,
-                        height: 120,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-Bold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
                       }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flex: 1.2,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 17,
-                            textAlign: 'center',
-                            color: colors.white,
-                          }}>
-                          Current F.Y.
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 1,
-                          paddingHorizontal: 10,
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          backgroundColor: colors.white,
-                          flexDirection: 'row',
-                          borderBottomWidth: 1,
-                        }}>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-Bold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          Converted
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                            flex: 1,
-                            alignItems: 'flex-start',
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.yearly_quotation_converted
-                            : 0}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          backgroundColor: colors.white,
-                          flexDirection: 'row',
-                          paddingHorizontal: 10,
-                          borderBottomLeftRadius: 10,
-                          borderBottomRightRadius: 10,
-                          flex: 1,
-                        }}>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-Bold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          Received
-                        </Text>
-                        <Text
-                          style={{
-                            flex: 1,
-                            alignItems: 'flex-start',
-                            fontFamily: 'NunitoSans_10pt-ExtraBold',
-                            fontSize: 19,
-                            textAlign: 'center',
-                            color: colors.themecolor,
-                          }}>
-                          {Quodrder_info
-                            ? Quodrder_info?.yearly_order_converted_in_invoice
-                            : 0}
-                        </Text>
-                      </View>
-                    </Ripple>
+                      Received
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                        flex: 1,
+                      }}>
+                      {Quodrder_info
+                        ? Quodrder_info?.monthly_order_converted_in_invoice
+                        : 0}
+                    </Text>
                   </View>
-                </>
-              )}
+                </Ripple>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                  backgroundColor: '#fff',
+                }}>
+                <Ripple
+                  rippleColor={colors.white}
+                  rippleOpacity={0.5}
+                  rippleDuration={800}
+                  style={{
+                    backgroundColor: colors.themecolor,
+                    elevation: 5,
+                    width: 'auto',
+                    borderRadius: 10,
+                    height: 120,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1.2,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 17,
+                        textAlign: 'center',
+                        color: colors.white,
+                      }}>
+                      Current F.Y.
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      paddingHorizontal: 10,
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: colors.white,
+                      flexDirection: 'row',
+                      borderBottomWidth: 1,
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-Bold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      Converted
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                        flex: 1,
+                        alignItems: 'flex-start',
+                      }}>
+                      {Quodrder_info
+                        ? Quodrder_info?.yearly_quotation_converted
+                        : 0}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: colors.white,
+                      flexDirection: 'row',
+                      paddingHorizontal: 10,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                      flex: 1,
+                    }}>
+                    <Text
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-Bold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      Received
+                    </Text>
+                    <Text
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                        fontFamily: 'NunitoSans_10pt-ExtraBold',
+                        fontSize: 19,
+                        textAlign: 'center',
+                        color: colors.themecolor,
+                      }}>
+                      {Quodrder_info
+                        ? Quodrder_info?.yearly_order_converted_in_invoice
+                        : 0}
+                    </Text>
+                  </View>
+                </Ripple>
+              </View>
             </View>
           </View>
-
+          {/* Order Converted & Order Received */}
+          {/* Overdue */}
           <View style={{width: '95%', alignSelf: 'center', marginTop: 10}}>
             <Text
               style={{
@@ -1101,7 +1063,7 @@ const DashBoard = props => {
                           textAlign: 'center',
                           color: colors.white,
                         }}>
-                        60+ Days{' '}
+                        60+ Days
                       </Text>
                     </View>
 
@@ -1131,6 +1093,7 @@ const DashBoard = props => {
               </View>
             )}
           </View>
+          {/* Overdue */}
         </ScrollView>
       )}
     </View>

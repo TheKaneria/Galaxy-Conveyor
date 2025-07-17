@@ -18,6 +18,7 @@ import {
   quotation_order_count_url,
   overdue_report_url,
 } from '../Utils/BaseUrl';
+import Toast from 'react-native-simple-toast';
 import axios from 'axios';
 import Sales_reducers from '../Reducer/sales_reducer';
 import {useLoginContext} from './login_context';
@@ -70,8 +71,6 @@ export const Salesprovider = ({children}) => {
         },
       })
       .then(res => {
-        // console.log('res', JSON.stringify(res.data, null, 2));
-
         if (res.data.status === 'Token is Expired') {
           setLogout(props);
         } else {
@@ -95,8 +94,6 @@ export const Salesprovider = ({children}) => {
         },
       })
       .then(res => {
-        console.log('res', JSON.stringify(res.data, null, 2));
-
         if (res.data.status === 'Token is Expired') {
           setLogout(props);
         } else {
@@ -105,6 +102,7 @@ export const Salesprovider = ({children}) => {
         }
       })
       .catch(err => {
+        console.log('err', err);
         dispatch({type: OVERDUE_ERROR});
       });
   };

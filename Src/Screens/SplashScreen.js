@@ -1,22 +1,41 @@
-import {View} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as Animatable from 'react-native-animatable';
+import Shimmer from 'react-native-shimmer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import colors from '../Utils/colors';
 
 const SplashScreen = props => {
   const [animation, setAnimation] = useState('zoomIn');
+  //   useEffect(() => {
+  //     setTimeout(() => {
+  //       props.navigation.navigate('Login');
+  //     }, 2000);
+  //   }, []);
 
-  const handleAnimationEnd = () => {
-    setTimeout(() => {
-      setAnimation(customZoomIn);
-    }, 1500);
-  };
   useEffect(() => {
     checklogin();
   }, []);
 
-  const customZoomIn = {
+  const handleAnimationStart = () => {
+    // Trigger "zoom out" after the initial "zoom in"
+    setTimeout(() => {
+      setAnimation(customZoomOut);
+    }, 2000); // Delay before zooming out
+  };
+
+  const checklogin = async () => {
+    setTimeout(async () => {
+      var islogins = await AsyncStorage.getItem('islogin');
+
+      if (islogins === 'true') {
+        props.navigation.replace('MainTab');
+      } else {
+        props.navigation.replace('Login');
+      }
+    }, 3000);
+  };
+
+  const customZoomOut = {
     0: {
       opacity: 1,
       scale: 1.0,
@@ -27,37 +46,18 @@ const SplashScreen = props => {
     },
   };
 
-  const checklogin = async () => {
-    setTimeout(async () => {
-      var islogins = await AsyncStorage.getItem('islogin');
-      console.log('islogins', islogins);
-
-      if (islogins === 'true') {
-        props.navigation.replace('DashBoard');
-      } else {
-        props.navigation.replace('Login');
-      }
-    }, 3800);
-  };
-
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.white,
-      }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <View style={{width: '90%', alignSelf: 'center', alignItems: 'center'}}>
         <Animatable.Image
           animation={animation}
-          onAnimationEnd={handleAnimationEnd}
           duration={1000}
-          easing={'ease-in-out'}
           resizeMode="center"
           style={{height: 100, width: '95%'}}
-          source={require('../Assets/Logo1.png')}
+          easing={'ease-in-out'}
+          source={require('../Assets/LogoC1.png')}
           useNativeDriver={true}
+          onAnimationBegin={handleAnimationStart}
           iterationCount={1}
         />
       </View>

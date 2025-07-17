@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757640276245",
+    "project_id": "galaxyconveyor",
+    "storage_bucket": "galaxyconveyor.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757640276245:android:d1ad070fb05335053b611c",
+        "android_client_info": {
+          "package_name": "com.galaxycoveyor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOav2c6dAF1tGNWqZNHsS0QQ-3hDf9oxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

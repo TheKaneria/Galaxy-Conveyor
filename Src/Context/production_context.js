@@ -70,8 +70,6 @@ export const Productprovider = ({children}) => {
         },
       })
       .then(res => {
-        // console.log('ressss', JSON.stringify(res.data, null, 2));
-
         if (res.data.status === 'Token is Expired') {
           setLogout(props);
         } else {

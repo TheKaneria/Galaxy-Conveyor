@@ -6,6 +6,10 @@ import LoginScreen from './Screens/LoginScreen';
 import SplashScreen from './Screens/SplashScreen';
 import DashBoard from './Screens/DashBoard';
 import Productnation from './Screens/Production/Production';
+import MainTab from './Screens/MainTab';
+import ADDTadaScreen from './Screens/TADA/AddTadaScreen';
+import ViewLeadScreen from './Screens/Lead/ViewLeadScreen';
+import AddLeadScreen from './Screens/Lead/AddLeadScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,9 +21,12 @@ const Navigation = () => {
         initialRouteName="SplashScreen">
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="DashBoard" component={DashBoard} />
+        <Stack.Screen name="MainTab" component={MainTab} />
 
         <Stack.Screen name="Productnation" component={Productnation} />
+        <Stack.Screen name="ADDTadaScreen" component={ADDTadaScreen} />
+        <Stack.Screen name="ViewLeadScreen" component={ViewLeadScreen} />
+        <Stack.Screen name="AddLeadScreen" component={AddLeadScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

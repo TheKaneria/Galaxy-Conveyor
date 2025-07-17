@@ -1,10 +1,44 @@
 // export const BASE_URL = 'https://theapplified.com/galaxychain/api/v1/';
 export const BASE_URL = 'https://theapplified.com/galaxyconveyors/api/v1/';
+// export const BASE_URL = 'https://theapplified.com/testgc/api/v1/';
 export const ACCEPT_HEADER = 'application/x.galaxychain.v1+json';
 
 export const login_check_url = BASE_URL + 'login';
 export const getsales_url = BASE_URL + 'all-sales-count';
 export const getproduct_url = BASE_URL + 'production-report';
+export const overdue_report_url = BASE_URL + 'overdue-report';
 export const get_all_items_data_url = BASE_URL + 'get-all-items-data';
 export const quotation_order_count_url = BASE_URL + 'quotation-order-count';
-export const overdue_report_url = BASE_URL + 'overdue-report';
+export const get_attendance_url = BASE_URL + 'get-attendance';
+export const punch_in_url = BASE_URL + 'punch-in';
+export const punch_out_url = BASE_URL + 'punch-out';
+export const break_punch_in_url = BASE_URL + 'break-punch-in';
+export const break_punch_out_url = BASE_URL + 'break-punch-out';
+export const attendance_count_url = BASE_URL + 'attendance-count';
+export const get_ta_da_url = BASE_URL + 'get_ta_da';
+export const delete_ta_da_url = BASE_URL + 'delete_ta_da';
+export const create_ta_da_url = BASE_URL + 'create_ta_da';
+export const update_ta_da_url = BASE_URL + 'update_ta_da';
+export const getexpense_url = BASE_URL + 'getexpense';
+export const getlead_url = BASE_URL + 'getlead';
+export const getsalesperson_url = BASE_URL + 'getsalesperson';
+export const leaddelete_url = BASE_URL + 'leaddelete';
+export const leadassign_url = BASE_URL + 'leadassign';
+export const leadcollaborator_url = BASE_URL + 'leadcollaborator';
+export const leadfollowup_url = BASE_URL + 'leadfollowup';
+export const getcustomer_url = BASE_URL + 'getcustomer';
+export const getcountry_url = BASE_URL + 'getcountry';
+export const getstate_url = BASE_URL + 'getstate';
+export const getcity_url = BASE_URL + 'getcity';
+export const type_of_customer_url = BASE_URL + 'type_of_customer';
+export const primary_type_of_industry_url =
+  BASE_URL + 'primary_type_of_industry';
+export const getzone_url = BASE_URL + 'getzone';
+export const getsegment_url = BASE_URL + 'getsegment';
+export const getleadsource_url = BASE_URL + 'getleadsource';
+export const getleadstage_url = BASE_URL + 'getleadstage';
+export const createlead_url = BASE_URL + 'createlead';
+export const updatelead_url = BASE_URL + 'updatelead';
+export const startmeeting_against_lead_url =
+  BASE_URL + 'startmeeting_against_lead';
+export const endmeeting_against_lead_url = BASE_URL + 'endmeeting_against_lead';

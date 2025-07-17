@@ -9,7 +9,6 @@ const colors = {
   themecolor1: 'rgb(252, 43, 50)',
   // themecolor: '#0D4598',
   themecolor: '#D2691E',
-
   backgroundcolor: '#f9f1eb',
   lightblue: '#4498F8',
   gary: '#F5F5F5',
