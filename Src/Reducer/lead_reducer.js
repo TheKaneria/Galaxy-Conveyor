@@ -5,9 +5,15 @@ import {
   ASSIGN_LEAD_BEGIN,
   ASSIGN_LEAD_ERROR,
   ASSIGN_LEAD_SUCCESS,
+  CANCEL_ASSIGN_BEGIN,
+  CANCEL_ASSIGN_ERROR,
+  CANCEL_ASSIGN_SUCCESS,
   COLLAB_LEAD_BEGIN,
   COLLAB_LEAD_ERROR,
   COLLAB_LEAD_SUCCESS,
+  CONVERT_CUSTOMER_BEGIN,
+  CONVERT_CUSTOMER_ERROR,
+  CONVERT_CUSTOMER_SUCCESS,
   DELETE_LEAD_BEGIN,
   DELETE_LEAD_ERROR,
   DELETE_LEAD_SUCCESS,
@@ -24,6 +30,9 @@ import {
   GET_START_MEETING_BEGIN,
   GET_START_MEETING_ERROR,
   GET_START_MEETING_SUCCESS,
+  REMOVE_COLLABORATOR_BEGIN,
+  REMOVE_COLLABORATOR_ERROR,
+  REMOVE_COLLABORATOR_SUCCESS,
   UPDATE_LEAD_BEGIN,
   UPDATE_LEAD_ERROR,
   UPDATE_LEAD_SUCCESS,
@@ -198,6 +207,60 @@ const Lead_reducers = (state, action) => {
       return {
         ...state,
         endmeeting_loading: false,
+      };
+
+    case CANCEL_ASSIGN_BEGIN:
+      return {
+        ...state,
+        cancel_assign_loading: true,
+      };
+
+    case CANCEL_ASSIGN_SUCCESS:
+      return {
+        ...state,
+        cancel_assign_loading: false,
+      };
+
+    case CANCEL_ASSIGN_ERROR:
+      return {
+        ...state,
+        cancel_assign_loading: false,
+      };
+
+    case REMOVE_COLLABORATOR_BEGIN:
+      return {
+        ...state,
+        remove_collaborator_loading: true,
+      };
+
+    case REMOVE_COLLABORATOR_SUCCESS:
+      return {
+        ...state,
+        remove_collaborator_loading: false,
+      };
+
+    case REMOVE_COLLABORATOR_ERROR:
+      return {
+        ...state,
+        remove_collaborator_loading: false,
+      };
+
+    case CONVERT_CUSTOMER_BEGIN:
+      return {
+        ...state,
+        convert_customer_loading: true,
+      };
+
+    case CONVERT_CUSTOMER_SUCCESS:
+      return {
+        ...state,
+        convert_customer_loading: false,
+      };
+
+    case CONVERT_CUSTOMER_ERROR:
+      return {
+        ...state,
+        convert_customer_loading: false,
       };
 
     default:

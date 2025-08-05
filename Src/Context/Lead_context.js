@@ -11,9 +11,15 @@ import {
   ASSIGN_LEAD_BEGIN,
   ASSIGN_LEAD_ERROR,
   ASSIGN_LEAD_SUCCESS,
+  CANCEL_ASSIGN_BEGIN,
+  CANCEL_ASSIGN_ERROR,
+  CANCEL_ASSIGN_SUCCESS,
   COLLAB_LEAD_BEGIN,
   COLLAB_LEAD_ERROR,
   COLLAB_LEAD_SUCCESS,
+  CONVERT_CUSTOMER_BEGIN,
+  CONVERT_CUSTOMER_ERROR,
+  CONVERT_CUSTOMER_SUCCESS,
   DELETE_LEAD_BEGIN,
   DELETE_LEAD_ERROR,
   DELETE_LEAD_SUCCESS,
@@ -30,12 +36,17 @@ import {
   GET_START_MEETING_BEGIN,
   GET_START_MEETING_ERROR,
   GET_START_MEETING_SUCCESS,
+  REMOVE_COLLABORATOR_BEGIN,
+  REMOVE_COLLABORATOR_ERROR,
+  REMOVE_COLLABORATOR_SUCCESS,
   UPDATE_LEAD_BEGIN,
   UPDATE_LEAD_ERROR,
   UPDATE_LEAD_SUCCESS,
 } from '../Utils/action';
 import {
   ACCEPT_HEADER,
+  cancel_assign_url,
+  convert_customer_from_lead_url,
   createlead_url,
   endmeeting_against_lead_url,
   getlead_url,
@@ -44,6 +55,7 @@ import {
   leadcollaborator_url,
   leaddelete_url,
   leadfollowup_url,
+  remove_collaborator_url,
   startmeeting_against_lead_url,
   updatelead_url,
 } from '../Utils/BaseUrl';
@@ -60,6 +72,9 @@ const initialState = {
   createlead_loading: false,
   startmeeting_loading: false,
   endmeeting_loading: false,
+  cancel_assign_loading: false,
+  remove_collaborator_loading: false,
+  convert_customer_loading: false,
 };
 
 export const Leadprovider = ({children}) => {
@@ -345,6 +360,93 @@ export const Leadprovider = ({children}) => {
       });
   };
 
+  const unAssign = async (formdata, props) => {
+    var Token = await AsyncStorage.getItem('token');
+    dispatch({type: CANCEL_ASSIGN_BEGIN});
+    axios
+      .post(cancel_assign_url, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: 'Bearer ' + Token,
+        },
+      })
+      .then(res => {
+        if (res.data.status === 'Token is Expired') {
+          setLogout(props);
+        } else {
+          if (res.data.success === 1) {
+            dispatch({type: CANCEL_ASSIGN_SUCCESS});
+            SimpleToast.show(res.data.message);
+            GetLeadList(props);
+          } else {
+            dispatch({type: CANCEL_ASSIGN_ERROR});
+            SimpleToast.show(res.data.message);
+          }
+        }
+      })
+      .catch(err => {
+        dispatch({type: CANCEL_ASSIGN_ERROR});
+      });
+  };
+
+  const Removecollaborator = async (formdata, props) => {
+    var Token = await AsyncStorage.getItem('token');
+    dispatch({type: REMOVE_COLLABORATOR_BEGIN});
+    axios
+      .post(remove_collaborator_url, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: 'Bearer ' + Token,
+        },
+      })
+      .then(res => {
+        if (res.data.status === 'Token is Expired') {
+          setLogout(props);
+        } else {
+          if (res.data.success === 1) {
+            dispatch({type: REMOVE_COLLABORATOR_SUCCESS});
+            SimpleToast.show(res.data.message);
+            GetLeadList(props);
+          } else {
+            dispatch({type: REMOVE_COLLABORATOR_ERROR});
+            SimpleToast.show(res.data.message);
+          }
+        }
+      })
+      .catch(err => {
+        dispatch({type: REMOVE_COLLABORATOR_ERROR});
+      });
+  };
+
+  const Convertcustomer = async (formdata, props) => {
+    var Token = await AsyncStorage.getItem('token');
+    dispatch({type: CONVERT_CUSTOMER_BEGIN});
+    axios
+      .post(convert_customer_from_lead_url, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: 'Bearer ' + Token,
+        },
+      })
+      .then(res => {
+        if (res.data.status === 'Token is Expired') {
+          setLogout(props);
+        } else {
+          if (res.data.success === 1) {
+            dispatch({type: CONVERT_CUSTOMER_SUCCESS});
+            SimpleToast.show(res.data.message);
+            GetLeadList(props);
+          } else {
+            dispatch({type: CONVERT_CUSTOMER_ERROR});
+            SimpleToast.show(res.data.message);
+          }
+        }
+      })
+      .catch(err => {
+        dispatch({type: CONVERT_CUSTOMER_ERROR});
+      });
+  };
+
   return (
     <Leadcontext.Provider
       value={{
@@ -359,6 +461,9 @@ export const Leadprovider = ({children}) => {
         updateLead,
         startmeeting,
         endmeeting,
+        unAssign,
+        Removecollaborator,
+        Convertcustomer,
       }}>
       {children}
     </Leadcontext.Provider>

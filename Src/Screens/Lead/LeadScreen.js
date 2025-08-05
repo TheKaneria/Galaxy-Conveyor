@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import metrics from '../../Utils/metrics';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useLeadContext} from '../../Context/Lead_context';
 import Modal from 'react-native-modal';
@@ -28,7 +28,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import SimpleToast from 'react-native-simple-toast';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import Geolocation from 'react-native-geolocation-service';
+import {useFocusEffect} from '@react-navigation/native';
 
 const FollowUpDATA = [
   {id: 1, name: 'Pending'},
@@ -57,6 +59,12 @@ const LeadScreen = props => {
     startmeeting_loading,
     endmeeting,
     endmeeting_loading,
+    unAssign,
+    cancel_assign_loading,
+    Removecollaborator,
+    remove_collaborator_loading,
+    Convertcustomer,
+    convert_customer_loading,
   } = useLeadContext();
   const [deletemodal, setDeleteModal] = useState(false);
 
@@ -69,6 +77,11 @@ const LeadScreen = props => {
   const [collaboratormodal, setCollaboratorModal] = useState(false);
   const [collaboratorstatus, setCollaboratorStatus] = useState('');
 
+  const [removeassignmodal, setRemoveAssignModal] = useState(false);
+  const [removecollaboratornmodal, setRemoveCollaboratorModal] =
+    useState(false);
+  const [consvertcustomermodal, setConsvertCustomerModal] = useState(false);
+
   const [getcancelreason, setCancelReason] = useState('');
   const [getremark, setRemark] = useState('');
 
@@ -79,13 +92,12 @@ const LeadScreen = props => {
 
   const [mainid, setMainId] = useState('');
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener('focus', () => {
+  useFocusEffect(
+    useCallback(() => {
       GetLeadList(props);
       Getsalesperson(props);
-    });
-    return unsubscribe;
-  }, [props]);
+    }, []),
+  );
 
   useEffect(() => {
     const updateClock = () => {
@@ -150,7 +162,6 @@ const LeadScreen = props => {
             alignItems: 'center',
             marginHorizontal: '3%',
             marginTop: metrics.HEIGHT * 0.01,
-            // alignSelf: 'flex-end',
             justifyContent: 'space-between',
           }}>
           <View
@@ -169,7 +180,11 @@ const LeadScreen = props => {
               {item?.id || ''}
             </Text>
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
             <FontAwesome name="calendar" color={colors.themecolor} size={14} />
             <Text
               style={{
@@ -202,6 +217,7 @@ const LeadScreen = props => {
               color: colors.black,
               fontFamily: 'NunitoSans_10pt-ExtraBold',
               fontSize: 16,
+              width: '60%',
             }}>
             {item?.master_customer
               ? item?.master_customer
@@ -236,6 +252,21 @@ const LeadScreen = props => {
                 }}>
                 {item?.assign_to?.name || ''}
               </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setMainId(item?.id);
+                  setRemoveAssignModal(true);
+                }}
+                style={{
+                  marginHorizontal: '2%',
+                }}>
+                <MaterialIcons
+                  name="cancel"
+                  color={colors.themecolor1}
+                  size={25}
+                />
+              </TouchableOpacity>
             </>
           ) : (
             <TouchableOpacity
@@ -287,6 +318,21 @@ const LeadScreen = props => {
                 }}>
                 {item?.collaborator_to?.name || ''}
               </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setMainId(item?.id);
+                  setRemoveCollaboratorModal(true);
+                }}
+                style={{
+                  marginHorizontal: '2%',
+                }}>
+                <MaterialIcons
+                  name="cancel"
+                  color={colors.themecolor1}
+                  size={25}
+                />
+              </TouchableOpacity>
             </>
           ) : (
             <TouchableOpacity
@@ -470,6 +516,26 @@ const LeadScreen = props => {
             </View>
           </>
         ) : null}
+
+        {item?.is_customer === 'true' || item?.is_customer === true ? (
+          <>
+            <View
+              style={{
+                marginHorizontal: '2%',
+                marginTop: metrics.HEIGHT * 0.015,
+              }}>
+              <Text
+                style={{
+                  color: colors.green,
+                  fontFamily: 'NunitoSans_10pt-ExtraBold',
+                  fontSize: 13,
+                }}>
+                Customer already exists in Customer Master.
+              </Text>
+            </View>
+          </>
+        ) : null}
+
         <View
           style={{
             marginTop: metrics.HEIGHT * 0.01,
@@ -489,6 +555,37 @@ const LeadScreen = props => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
+          {item?.lead_assign_sales_person_id ? (
+            <>
+              {item?.is_customer === 'false' || item?.is_customer === false ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setMainId(item?.id);
+                    setConsvertCustomerModal(true);
+                  }}
+                  disabled={convert_customer_loading ? true : false}
+                  style={{
+                    paddingHorizontal: '4.5%',
+                    backgroundColor: colors.white,
+                    paddingVertical: '4.5%',
+                    elevation: 3,
+                    borderRadius: 10,
+                    marginHorizontal: '4%',
+                  }}>
+                  {convert_customer_loading ? (
+                    <ActivityIndicator color={colors.themecolor} size="small" />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="account-convert"
+                      size={25}
+                      color={colors.themecolor}
+                    />
+                  )}
+                </TouchableOpacity>
+              ) : null}
+            </>
+          ) : null}
+
           {item?.lead_assign_sales_person_id ? (
             <>
               <TouchableOpacity
@@ -782,6 +879,43 @@ const LeadScreen = props => {
     } else {
     }
   };
+
+  const UnAssigncheck = () => {
+    const formdata = new FormData();
+    formdata.append('id', mainid);
+    unAssign(formdata, props);
+
+    if (cancel_assign_loading === false) {
+    } else {
+      setMainId('');
+      setRemoveAssignModal(false);
+    }
+  };
+
+  const Removecollaboratorcheck = () => {
+    const formdata = new FormData();
+    formdata.append('id', mainid);
+    Removecollaborator(formdata, props);
+
+    if (remove_collaborator_loading === false) {
+    } else {
+      setMainId('');
+      setRemoveCollaboratorModal(false);
+    }
+  };
+
+  const Convertcustomercheck = () => {
+    const formdata = new FormData();
+    formdata.append('id', mainid);
+
+    Convertcustomer(formdata, props);
+
+    if (convert_customer_loading === false) {
+    } else {
+      setMainId('');
+      setConsvertCustomerModal(false);
+    }
+  };
   return (
     <View
       style={{
@@ -938,6 +1072,309 @@ const LeadScreen = props => {
               </View>
             </Modal>
             {/* delete modal */}
+
+            {/* remove assign modal */}
+            <Modal
+              isVisible={removeassignmodal}
+              onBackButtonPress={() => setRemoveAssignModal(false)}
+              onBackdropPress={() => setRemoveAssignModal(false)}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: '95%',
+                    backgroundColor: colors.white,
+                    borderRadius: 10,
+                    elevation: 5,
+                  }}>
+                  <View style={{padding: 15}}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+
+                        marginBottom: 10,
+                        textAlign: 'center',
+                        color: colors.black,
+                      }}>
+                      UNASSIGN Alert
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        textAlign: 'center',
+                        marginBottom: 20,
+                        color: colors.black,
+                      }}>
+                      Are you sure you want to UNASSIGN this lead?
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      borderTopWidth: 1,
+                      borderColor: '#ccc',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setRemoveAssignModal(false);
+                        UnAssigncheck();
+                      }}
+                      disabled={cancel_assign_loading ? true : false}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        alignItems: 'center',
+                      }}>
+                      {cancel_assign_loading ? (
+                        <ActivityIndicator color={'red'} size="small" />
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 16,
+
+                            color: 'red',
+                          }}>
+                          Confirm
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        width: 1,
+                        backgroundColor: '#ccc',
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setMainId('');
+                        setRemoveAssignModal(false);
+                      }}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+
+                          color: colors.black,
+                        }}>
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+            {/* remove assign modal */}
+
+            {/* remove collaborator modal */}
+            <Modal
+              isVisible={removecollaboratornmodal}
+              onBackButtonPress={() => setRemoveCollaboratorModal(false)}
+              onBackdropPress={() => setRemoveCollaboratorModal(false)}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: '95%',
+                    backgroundColor: colors.white,
+                    borderRadius: 10,
+                    elevation: 5,
+                  }}>
+                  <View style={{padding: 15}}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+
+                        marginBottom: 10,
+                        textAlign: 'center',
+                        color: colors.black,
+                      }}>
+                      Remove Alert
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        textAlign: 'center',
+                        marginBottom: 20,
+                        color: colors.black,
+                      }}>
+                      Are you sure you want to remove collaborator?
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      borderTopWidth: 1,
+                      borderColor: '#ccc',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setRemoveCollaboratorModal(false);
+                        Removecollaboratorcheck();
+                      }}
+                      disabled={remove_collaborator_loading ? true : false}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        alignItems: 'center',
+                      }}>
+                      {remove_collaborator_loading ? (
+                        <ActivityIndicator color={'red'} size="small" />
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 16,
+
+                            color: 'red',
+                          }}>
+                          Confirm
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        width: 1,
+                        backgroundColor: '#ccc',
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setMainId('');
+                        setRemoveCollaboratorModal(false);
+                      }}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+
+                          color: colors.black,
+                        }}>
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+            {/* remove collaborator modal */}
+
+            {/* consvert customermodal modal */}
+            <Modal
+              isVisible={consvertcustomermodal}
+              onBackButtonPress={() => setConsvertCustomerModal(false)}
+              onBackdropPress={() => setConsvertCustomerModal(false)}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: '95%',
+                    backgroundColor: colors.white,
+                    borderRadius: 10,
+                    elevation: 5,
+                  }}>
+                  <View style={{padding: 15}}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+
+                        marginBottom: 10,
+                        textAlign: 'center',
+                        color: colors.black,
+                      }}>
+                      Alert
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        textAlign: 'center',
+                        marginBottom: 20,
+                        color: colors.black,
+                      }}>
+                      Are you sure want to create customer?
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      borderTopWidth: 1,
+                      borderColor: '#ccc',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setConsvertCustomerModal(false);
+                        Convertcustomercheck();
+                      }}
+                      disabled={convert_customer_loading ? true : false}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        alignItems: 'center',
+                      }}>
+                      {convert_customer_loading ? (
+                        <ActivityIndicator color={'red'} size="small" />
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 16,
+
+                            color: 'red',
+                          }}>
+                          Confirm
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        width: 1,
+                        backgroundColor: '#ccc',
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setMainId('');
+                        setConsvertCustomerModal(false);
+                      }}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+
+                          color: colors.black,
+                        }}>
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+            {/* consvert customermodal modal */}
 
             {/* Follow Up Modal */}
             <Modal

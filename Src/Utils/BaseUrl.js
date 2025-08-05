@@ -42,3 +42,7 @@ export const updatelead_url = BASE_URL + 'updatelead';
 export const startmeeting_against_lead_url =
   BASE_URL + 'startmeeting_against_lead';
 export const endmeeting_against_lead_url = BASE_URL + 'endmeeting_against_lead';
+export const cancel_assign_url = BASE_URL + 'cancel_assign';
+export const remove_collaborator_url = BASE_URL + 'remove_collaborator';
+export const convert_customer_from_lead_url =
+  BASE_URL + 'convert_customer_from_lead';
