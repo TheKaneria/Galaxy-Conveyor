@@ -1,6 +1,4 @@
-// export const BASE_URL = 'https://theapplified.com/galaxychain/api/v1/';
-export const BASE_URL = 'https://theapplified.com/galaxyconveyors/api/v1/';
-// export const BASE_URL = 'https://theapplified.com/testgc/api/v1/';
+export const BASE_URL = 'https://gcbend.galaxyconveyors.com/api/v1/';
 export const ACCEPT_HEADER = 'application/x.galaxychain.v1+json';
 
 export const login_check_url = BASE_URL + 'login';
