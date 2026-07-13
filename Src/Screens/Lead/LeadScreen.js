@@ -1659,7 +1659,7 @@ const LeadScreen = props => {
                           fontFamily: 'Domine-Bold',
                           fontSize: 16,
                         }}>
-                        COLSE
+                        CLOSE
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -1815,7 +1815,7 @@ const LeadScreen = props => {
                           fontFamily: 'Domine-Bold',
                           fontSize: 16,
                         }}>
-                        COLSE
+                        CLOSE
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -1971,7 +1971,7 @@ const LeadScreen = props => {
                           fontFamily: 'Domine-Bold',
                           fontSize: 16,
                         }}>
-                        COLSE
+                        CLOSE
                       </Text>
                     </TouchableOpacity>
                   </View>

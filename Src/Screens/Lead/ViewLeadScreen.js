@@ -942,7 +942,7 @@ const ViewLeadScreen = props => {
               fontSize: 16,
               fontWeight: 'bold',
             }}>
-            COLSE
+            CLOSE
           </Text>
         </TouchableOpacity>
       </ScrollView>
