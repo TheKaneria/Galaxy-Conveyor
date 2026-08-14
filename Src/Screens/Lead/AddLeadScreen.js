@@ -106,15 +106,26 @@ const AddLeadScreen = props => {
       setLeadStage(item?.lead_stage_id || '');
       setBusinessOpportunity(item?.probable_business_opportunity || '');
       setValue(item?.rating || '');
+      setWebsite(item?.website || '');
       if (item?.leadchild && item.leadchild.length > 0) {
         const formatted = item.leadchild.map(item => ({
           opportunity: item.name ?? '',
           designation: item.designation ?? '',
           contact: item.number ?? '',
+          email: item.email ?? '', // 👈 add
+          numberLandline: item.number_landline ?? '',
         }));
         setContactPersons(formatted);
       } else {
-        setContactPersons([{opportunity: '', designation: '', contact: ''}]);
+        setContactPersons([
+          {
+            opportunity: '',
+            designation: '',
+            contact: '',
+            email: '',
+            numberLandline: '',
+          },
+        ]);
       }
       setIsEdit(true);
     } else {
@@ -157,15 +168,27 @@ const AddLeadScreen = props => {
   const [businessOpportunity, setBusinessOpportunity] = useState('');
   const [value, setValue] = useState('');
   const [location, setLocation] = useState(null);
-
+  const [website, setWebsite] = useState('');
   const [contactPersons, setContactPersons] = useState([
-    {opportunity: '', designation: '', contact: ''},
+    {
+      opportunity: '',
+      designation: '',
+      contact: '',
+      email: '',
+      numberLandline: '',
+    },
   ]);
 
   const handleAdd = () => {
     setContactPersons([
       ...contactPersons,
-      {opportunity: '', designation: '', contact: ''},
+      {
+        opportunity: '',
+        designation: '',
+        contact: '',
+        email: '',
+        numberLandline: '',
+      },
     ]);
   };
 
@@ -237,7 +260,7 @@ const AddLeadScreen = props => {
           {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
         );
       });
-      // console.log('Coords', position.coords);
+
       setLocation(position.coords);
     } catch (error) {
       console.error('Error:', error.message);
@@ -270,7 +293,19 @@ const AddLeadScreen = props => {
     formadata.append('state_id', id);
     Citylist(formadata, props);
   };
-
+  const isValidEmail = email => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  // const isValidLandline = number => {
+  //   const landlineRegex = /^[0-9]{10}$/;
+  //   return landlineRegex.test(number);
+  // };
+  const isValidWebsite = url => {
+    const urlRegex =
+      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+    return urlRegex.test(url);
+  };
   const checkLead = () => {
     if (!getdate) {
       SimpleToast.show('Select Date..!!!');
@@ -302,6 +337,21 @@ const AddLeadScreen = props => {
       SimpleToast.show('Select Lead Source..!!!');
     } else if (!leadStage) {
       SimpleToast.show('Select Lead Stage..!!!');
+    } else if (
+      contactPersons.some(
+        person =>
+          person.email &&
+          person.email.trim() !== '' &&
+          !isValidEmail(person.email.trim()),
+      )
+    ) {
+      SimpleToast.show('Enter Valid Email..!!!');
+    } else if (
+      website &&
+      website.trim() !== '' &&
+      !isValidWebsite(website.trim())
+    ) {
+      SimpleToast.show('Enter Valid Website..!!!');
     } else {
       if (isedit) {
         Editlead();
@@ -338,10 +388,16 @@ const AddLeadScreen = props => {
     formadata.append('lead_stage_id', leadStage);
     formadata.append('probable_business_opportunity', businessOpportunity);
     formadata.append('rating', value);
+    formadata.append('website', website);
     for (let i = 0; i < contactPersons.length; i++) {
       formadata.append('name[' + i + ']', contactPersons[i].opportunity);
       formadata.append('designation[' + i + ']', contactPersons[i].designation);
       formadata.append('number[' + i + ']', contactPersons[i].contact);
+      formadata.append('email[' + i + ']', contactPersons[i].email);
+      formadata.append(
+        'number_landline[' + i + ']',
+        contactPersons[i].numberLandline,
+      );
     }
     formadata.append('latitude', location.latitude);
     formadata.append('longitude', location.longitude);
@@ -379,10 +435,16 @@ const AddLeadScreen = props => {
     formadata.append('lead_stage_id', leadStage);
     formadata.append('probable_business_opportunity', businessOpportunity);
     formadata.append('rating', value);
+    formadata.append('website', website);
     for (let i = 0; i < contactPersons.length; i++) {
       formadata.append('name[' + i + ']', contactPersons[i].opportunity);
       formadata.append('designation[' + i + ']', contactPersons[i].designation);
       formadata.append('number[' + i + ']', contactPersons[i].contact);
+      formadata.append('email[' + i + ']', contactPersons[i].email);
+      formadata.append(
+        'number_landline[' + i + ']',
+        contactPersons[i].numberLandline,
+      );
     }
     formadata.append('latitude', location.latitude);
     formadata.append('longitude', location.longitude);
@@ -1413,6 +1475,38 @@ const AddLeadScreen = props => {
           </View>
         </View>
         <View
+          style={{marginHorizontal: '2%', marginTop: metrics.HEIGHT * 0.01}}>
+          <Text
+            style={{
+              color: colors.themecolor,
+              fontSize: 18,
+              fontFamily: 'NunitoSans_10pt-SemiBold',
+              paddingHorizontal: 8,
+            }}>
+            Website
+          </Text>
+          <View
+            style={{
+              marginHorizontal: '2%',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: colors.themecolor,
+              marginTop: '2%',
+              marginBottom: '5%',
+            }}>
+            <TextInput
+              placeholder="Enter Website"
+              placeholderTextColor={colors.black}
+              style={{fontSize: 16, color: colors.black}}
+              keyboardType="default"
+              value={website}
+              onChangeText={text => {
+                setWebsite(text);
+              }}
+            />
+          </View>
+        </View>
+        <View
           style={{marginHorizontal: '2%', marginTop: metrics.HEIGHT * 0.005}}>
           {contactPersons.map((person, index) => (
             <View
@@ -1436,7 +1530,7 @@ const AddLeadScreen = props => {
                     fontSize: 18,
                     fontFamily: 'NunitoSans_10pt-SemiBold',
                   }}>
-                  Contact Person
+                  Contact Person<Text style={{color: 'red'}}>*</Text>
                 </Text>
                 <View style={{flexDirection: 'row'}}>
                   <TouchableOpacity onPress={handleAdd}>
@@ -1520,6 +1614,7 @@ const AddLeadScreen = props => {
                 }}>
                 Contact No.
               </Text>
+
               <View
                 style={{
                   borderRadius: 5,
@@ -1536,6 +1631,65 @@ const AddLeadScreen = props => {
                   keyboardType="phone-pad"
                   value={person.contact}
                   onChangeText={text => handleChange(index, 'contact', text)}
+                />
+              </View>
+              {/* Email Field */}
+              <Text
+                style={{
+                  color: colors.themecolor,
+                  fontSize: 18,
+                  fontFamily: 'NunitoSans_10pt-SemiBold',
+                  paddingHorizontal: 8,
+                }}>
+                Email
+              </Text>
+              <View
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: colors.themecolor,
+                  marginTop: '2%',
+                  marginBottom: '5%',
+                  paddingHorizontal: 8,
+                }}>
+                <TextInput
+                  placeholder="Enter Email"
+                  placeholderTextColor={colors.black}
+                  style={{fontSize: 16, color: colors.black}}
+                  keyboardType="email-address"
+                  value={person.email}
+                  onChangeText={text => handleChange(index, 'email', text)}
+                />
+              </View>
+
+              {/* Landline Field */}
+              <Text
+                style={{
+                  color: colors.themecolor,
+                  fontSize: 18,
+                  fontFamily: 'NunitoSans_10pt-SemiBold',
+                  paddingHorizontal: 8,
+                }}>
+                Landline No.
+              </Text>
+              <View
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: colors.themecolor,
+                  marginTop: '2%',
+                  marginBottom: '5%',
+                  paddingHorizontal: 8,
+                }}>
+                <TextInput
+                  placeholder="Enter Landline No."
+                  placeholderTextColor={colors.black}
+                  style={{fontSize: 16, color: colors.black}}
+                  keyboardType="phone-pad"
+                  value={person.numberLandline}
+                  onChangeText={text =>
+                    handleChange(index, 'numberLandline', text)
+                  }
                 />
               </View>
             </View>

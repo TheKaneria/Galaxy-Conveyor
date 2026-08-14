@@ -815,6 +815,37 @@ const ViewLeadScreen = props => {
           </View>
         </View>
         <View style={{marginHorizontal: '2%'}}>
+          <Text
+            style={{
+              color: colors.themecolor,
+              fontSize: 18,
+              fontFamily: 'NunitoSans_10pt-SemiBold',
+              paddingHorizontal: 8,
+            }}>
+            Website
+          </Text>
+          <View
+            style={{
+              marginHorizontal: '2%',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: colors.themecolor,
+              marginTop: '2%',
+              marginBottom: '5%',
+              padding: '3%',
+            }}>
+            <Text
+              style={{
+                color: colors.black,
+                fontFamily: 'NunitoSans_10pt-SemiBold',
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
+              {data?.website || ''}
+            </Text>
+          </View>
+        </View>
+        <View style={{marginHorizontal: '2%'}}>
           <FlatList
             data={data?.leadchild}
             renderItem={({item, index}) => {
@@ -897,6 +928,7 @@ const ViewLeadScreen = props => {
                     }}>
                     Contact No.
                   </Text>
+
                   <View
                     style={{
                       marginHorizontal: '2%',
@@ -915,6 +947,58 @@ const ViewLeadScreen = props => {
                       }}
                       keyboardType="default"
                       value={item?.number || ''}
+                      editable={false}
+                    />
+                  </View>
+                  {/* Contact No. block pachi aa 2 add karo */}
+                  <Text
+                    style={{
+                      color: colors.themecolor,
+                      fontSize: 18,
+                      fontFamily: 'NunitoSans_10pt-SemiBold',
+                      paddingHorizontal: 8,
+                    }}>
+                    Email
+                  </Text>
+                  <View
+                    style={{
+                      marginHorizontal: '2%',
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: colors.themecolor,
+                      marginTop: '2%',
+                      marginBottom: '5%',
+                    }}>
+                    <TextInput
+                      style={{fontSize: 16, color: colors.black}}
+                      keyboardType="default"
+                      value={item?.email || ''}
+                      editable={false}
+                    />
+                  </View>
+
+                  <Text
+                    style={{
+                      color: colors.themecolor,
+                      fontSize: 18,
+                      fontFamily: 'NunitoSans_10pt-SemiBold',
+                      paddingHorizontal: 8,
+                    }}>
+                    Landline No.
+                  </Text>
+                  <View
+                    style={{
+                      marginHorizontal: '2%',
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: colors.themecolor,
+                      marginTop: '2%',
+                      marginBottom: '5%',
+                    }}>
+                    <TextInput
+                      style={{fontSize: 16, color: colors.black}}
+                      keyboardType="default"
+                      value={item?.number_landline || ''}
                       editable={false}
                     />
                   </View>
